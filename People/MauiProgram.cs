@@ -19,8 +19,11 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-		// TODO: Add statements for adding PersonRepository as a singleton
+        string dbPath = FileAccessHelper.GetLocalFilePath("hdilan.db3");
+        builder.Services.AddSingleton<PersonRepository>(s => ActivatorUtilities.CreateInstance<PersonRepository>(s, dbPath));
 
-		return builder.Build();
+        // TODO: Add statements for adding PersonRepository as a singleton
+
+        return builder.Build();
 	}
 }

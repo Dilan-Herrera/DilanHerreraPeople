@@ -2,38 +2,117 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model="clr-namespace:People.Models"
-             x:Class="People.MainPage" 
-             BackgroundColor="{DynamicResource Light}">
+             xmlns:vm="clr-namespace:People.ViewModels"
+             x:Class="People.MainPage"
+             BackgroundColor="#FFFAF0"
+             Title="Dilan Herrera">
 
-    <Grid Padding="5" RowSpacing="5" ColumnSpacing="5"
-          RowDefinitions="Auto,Auto,Auto,Auto,*">
+    <ContentPage.BindingContext>
+        <vm:MainPageViewModel x:Name="dherrera_viewModel" />
+    </ContentPage.BindingContext>
 
-        <Entry x:Name="newPerson"
-           Placeholder="Enter name" />
+    <Grid Padding="10" RowSpacing="10" ColumnSpacing="5"
+          RowDefinitions="Auto,Auto,Auto,Auto,*,Auto">
 
-        <Button Text="Add Person"
-            Grid.Row="1"
-            Clicked="OnNewButtonClicked" />
+        <Entry x:Name="dherrera_entry"
+               Text="{Binding NewPersonName}"
+               Placeholder="Introduce un nombre"
+               BackgroundColor="#FFF5E1"
+               TextColor="#6B4226"
+               PlaceholderColor="#B97A57"
+               FontAttributes="Italic"
+               Margin="0,5" />
 
-        <Label x:Name="statusMessage"
-           TextColor="{StaticResource Primary}"
-           Grid.Row="2" />
+        <Button x:Name="dherrera_button_add"
+                Text="Añadir Persona"
+                Grid.Row="1"
+                Command="{Binding AddPersonCommand}"
+                BackgroundColor="#FFA07A"
+                TextColor="White"
+                CornerRadius="20"
+                HeightRequest="40" />
 
-        <Button Text="Get All People"
-            Grid.Row="3"
-            Clicked="OnGetButtonClicked" />
+        <Label x:Name="dherrera_label_status"
+               Text="{Binding StatusMessage}"
+               TextColor="#2E8B57"
+               FontAttributes="Bold"
+               Grid.Row="2"
+               HorizontalTextAlignment="Center" />
 
-        <CollectionView x:Name="peopleList" Grid.Row="4">
-            <CollectionView.ItemTemplate>
+        <Button x:Name="dherrera_button_getAll"
+                Text="Ver todas las personas"
+                Grid.Row="3"
+                Command="{Binding GetAllPeopleCommand}"
+                BackgroundColor="#8FBC8F"
+                TextColor="White"
+                CornerRadius="20"
+                HeightRequest="40" />
+
+        <ListView x:Name="dherrera_listView"
+                  ItemsSource="{Binding People}" 
+                  Grid.Row="4" 
+                  SelectionMode="None"
+                  BackgroundColor="#FFF5E1"
+                  SeparatorColor="#FFA07A">
+            <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:Person">
-                    <Grid ColumnDefinitions="*,2*">
-                        <Label Text="{Binding Id}" TextColor="{StaticResource Primary}"/>
-                        <Label Grid.Column="1" Text="{Binding Name}" TextColor="{StaticResource Primary}"/>
-                    </Grid>
+                    <ViewCell>
+                        <Grid x:Name="dherrera_grid_item" ColumnDefinitions="*,2*,Auto" Padding="5">
+                            <Label x:Name="dherrera_label_id"
+                                   Text="{Binding Id}" 
+                                   TextColor="#6B4226" />
+                            <Label x:Name="dherrera_label_name"
+                                   Grid.Column="1" 
+                                   Text="{Binding Name}" 
+                                   TextColor="#6B4226" />
+                            <Button x:Name="dherrera_button_delete"
+                                    Grid.Column="2" 
+                                    Text="Eliminar" 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=DeletePersonCommand}" 
+                                    CommandParameter="{Binding Id}"
+                                    BackgroundColor="#FF6347"
+                                    TextColor="White"
+                                    CornerRadius="10"
+                                    HeightRequest="30" />
+                        </Grid>
+                    </ViewCell>
                 </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Border x:Name="dherrera_border_card"
+                Grid.Row="5" 
+                Padding="10"
+                BackgroundColor="#FFE4C4"
+                Margin="10">
+            <Grid x:Name="dherrera_grid_card" 
+                  ColumnDefinitions="Auto,2*" 
+                  RowDefinitions="Auto,Auto">
+                <Image x:Name="dherrera_image_profile"
+                       Source="profile_picture.png" 
+                       HeightRequest="60" 
+                       WidthRequest="60" 
+                       Aspect="AspectFill" 
+                       Grid.RowSpan="2"
+                       Margin="0,0,10,0" />
+
+                <Label x:Name="dherrera_label_nameCard"
+                       Text="Dilan Herrera" 
+                       FontSize="Large" 
+                       FontAttributes="Bold" 
+                       Grid.Column="1" 
+                       VerticalOptions="Start"
+                       TextColor="#6B4226" />
+
+                <Label x:Name="dherrera_label_ageCard"
+                       Text="20 años" 
+                       FontSize="Medium" 
+                       Grid.Row="1" 
+                       Grid.Column="1" 
+                       VerticalOptions="Start"
+                       TextColor="#6B4226" />
+            </Grid>
+        </Border>
 
     </Grid>
-
 </ContentPage>
